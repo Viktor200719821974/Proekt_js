@@ -10,34 +10,69 @@
     const userDetails = new URL(location).searchParams.get('user');
     const user = JSON.parse(userDetails);
     let div = document.createElement('div');
-    div.innerText = `Username:  ${user.username} , email: ${user.email},
-    Address:  ${user.address.street} , ${user.address.suite} ,${user.address.city} , zipcode: ${user.address.zipcode},
-    geo: ${user.address.geo.lat}, ${user.address.geo.lng}, phone: ${user.phone}, website: ${user.website}, company: ${user.company.name}, cathPhrase: ${user.company.catchPhrase},
-    bs: ${user.company.bs}`;
-    div.style.backgroundColor = '';
+    let pText = document.createElement('p');
+    let pText1 = document.createElement('p');
+    let pText2 = document.createElement('p');
+    let pText3 = document.createElement('p');
+
+    pText.innerHTML = `<strong>username:</strong>   ${user.username} , <strong>email:</strong> ${user.email}`;
+    pText1.innerHTML = `<strong>address:</strong>  ${user.address.street} , ${user.address.suite} , ${user.address.city} , <strong>zipcode:</strong> ${user.address.zipcode}, <strong>geo:</strong> ${user.address.geo.lat},  ${user.address.geo.lng},`;
+        pText2.innerHTML = `<strong>phone:</strong> ${user.phone}, <strong>website:</strong> ${user.website}`;
+            pText3.innerHTML = `<strong>company:</strong> ${user.company.name}, <strong> cathPhrase:</strong> ${user.company.catchPhrase}, <strong>bs:</strong> ${user.company.bs}`;
+                div.style.border = '2px solid silver';
+    div.style.borderRadius = '10px';
+    div.style.padding = '10px';
+    div.style.fontSize = '20px';
+div.style.padding = '20px';
+div.style.columnGap = '20px';
+    div.style.backgroundColor = '#faedcd';
+    div.append(pText);
+    div.append(pText1);
+    div.append(pText2);
+    div.append(pText3);
+    div.style.display = 'flex';
     document.body.append(div);
 
-    let buttonDiv = document.createElement('div');
     let buttonPost = document.createElement('button');
     buttonPost.innerText = 'post of current user';
-    buttonDiv.appendChild(buttonPost);
-    document.body.appendChild(buttonDiv);
-    buttonPost.onclick = function (ev){
+    buttonPost.style.backgroundColor = '#faedcd';
+    buttonPost.style.color = 'blue';
+    buttonPost.style.margin = '90px 0 40px 700px';
+    buttonPost.style.borderRadius = '5px';
+    buttonPost.style.height = '30px';
+
+    document.body.appendChild(buttonPost);
+    buttonPost.onclick = function () {
         fetch('https://jsonplaceholder.typicode.com/posts')
             .then(value => value.json())
             .then(posts => {
+                let postsDiv = document.createElement('div');
+                for (const post of posts) {
+                    if (user.id === post.userId) {
+                        let postDiv = document.createElement('div');
+                        postDiv.style.width = '18%';
+                        postDiv.style.boxSizing = 'border-box';
+                        postDiv.style.border = '2px solid silver';
+                        postDiv.style.margin = '5px';
+                        postDiv.style.padding = '5px 10px';
+                        postDiv.style.fontSize = '18px';
+                        postDiv.style.backgroundColor = '#caffbf';
+                        postDiv.style.borderRadius = '10px';
 
-                for (const post of posts)
-                    if (user.id === post.userId){
-                        console.log(post.title);
-                        let  postDiv = document.createElement('div');
+
                         let buttonPost = document.createElement('a');
-                    postDiv.innerText = post.title;
-                    buttonPost.innerText = 'Details';
-                    buttonPost.href = `post-details.html?post=${JSON.stringify(post)}`;
-                    postDiv.appendChild(buttonPost);
-                        document.body.append(postDiv);
+                        postDiv.innerText = post.title;
+                        buttonPost.innerText = 'Details';
+                        buttonPost.href = `post-details.html?post=${JSON.stringify(post)}`;
+                        buttonPost.style.margin = '10px';
+                        postDiv.appendChild(buttonPost);
+                        postsDiv.append(postDiv);
                     }
+                }
+                postsDiv.style.marginLeft = '60px';
+                postsDiv.style.display = 'flex';
+                postsDiv.style.flexWrap = 'wrap';
+                document.body.append(postsDiv);
             });
     }
 </script>

@@ -8,15 +8,35 @@
 <script >
     const postDetails = new URL(location).searchParams.get('post');
     const post = JSON.parse(postDetails);
-    console.log(postDetails);
     let postDiv = document.createElement('div');
-    postDiv.innerText = `${post.id}, ${post.title}, ${post.userId}`;
+    postDiv.style.fontSize = '25px';
+    postDiv.style.margin = '20px 20px 20px 60px';
+    postDiv.innerText = `${post.id}. ${post.userId}. ${post.title}`;
     document.body.append(postDiv);
-let commentsDiv = document.createElement('div');
+
     fetch('https://jsonplaceholder.typicode.com/comments')
         .then(value => value.json())
         .then(comments => {
+            let commentsDiv = document.createElement('div');
+            for (const comment of comments) {
+                if(post.userId === comment.postId){
+                    let commentDiv = document.createElement('div');
+                    commentDiv.style.border = '2px solid red';
+                    commentDiv.style.width = '23%';
+                    commentDiv.style.boxSizing = 'border-box';
+                    commentDiv.style.borderRadius = '10px';
+                    commentDiv.style.padding = '10px';
+                    commentDiv.style.margin = '5px';
+                    commentDiv.style.backgroundColor = '#faedcd';
+                    commentDiv.innerHTML = `${comment.postId}. ${comment.id}.<strong> name: </strong>${comment.name}, <strong>email:</strong> ${comment.email},<strong> body:</strong> ${comment.body}`;
+                    commentsDiv.append(commentDiv);
+                }
+            }
+            commentsDiv.style.display = 'flex';
+            commentsDiv.style.flexWrap = 'wrap';
+            document.body.append(commentsDiv);
    });
+
 </script>
 </body>
 </html>
