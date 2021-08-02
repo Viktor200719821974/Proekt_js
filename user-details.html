@@ -5,14 +5,41 @@
     <title>Proekt</title>
 </head>
 <body>
-<script >
+<div id="users"></div>
+<script>
     const userDetails = new URL(location).searchParams.get('user');
     const user = JSON.parse(userDetails);
-    console.log(userDetails);
     let div = document.createElement('div');
-    // div.innerText = user.name;
-    div.style.backgroundColor = 'red';
+    div.innerText = `Username:  ${user.username} , email: ${user.email},
+    Address:  ${user.address.street} , ${user.address.suite} ,${user.address.city} , zipcode: ${user.address.zipcode},
+    geo: ${user.address.geo.lat}, ${user.address.geo.lng}, phone: ${user.phone}, website: ${user.website}, company: ${user.company.name}, cathPhrase: ${user.company.catchPhrase},
+    bs: ${user.company.bs}`;
+    div.style.backgroundColor = '';
     document.body.append(div);
+
+    let buttonDiv = document.createElement('div');
+    let buttonPost = document.createElement('button');
+    buttonPost.innerText = 'post of current user';
+    buttonDiv.appendChild(buttonPost);
+    document.body.appendChild(buttonDiv);
+    buttonPost.onclick = function (ev){
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(value => value.json())
+            .then(posts => {
+
+                for (const post of posts)
+                    if (user.id === post.userId){
+                        console.log(post.title);
+                        let  postDiv = document.createElement('div');
+                        let buttonPost = document.createElement('a');
+                    postDiv.innerText = post.title;
+                    buttonPost.innerText = 'Details';
+                    buttonPost.href = `post-details.html?post=${JSON.stringify(post)}`;
+                    postDiv.appendChild(buttonPost);
+                        document.body.append(postDiv);
+                    }
+            });
+    }
 </script>
 </body>
 </html>

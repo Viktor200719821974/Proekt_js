@@ -5,6 +5,22 @@
     <title>Proekt</title>
 </head>
 <body>
-
+<script >
+    const postDetails = new URL(location).searchParams.get('post');
+    const post = JSON.parse(postDetails);
+    console.log(postDetails);
+    let postDiv = document.createElement('div');
+    postDiv.innerText = `${post.id}, ${post.title}, ${post.userId}`;
+    document.body.append(postDiv);
+let commentsDiv = document.createElement('div');
+    fetch('https://jsonplaceholder.typicode.com/comments')
+        .then(value => value.json())
+        .then(comments => {
+   });
+</script>
 </body>
 </html>
+
+
+
+
